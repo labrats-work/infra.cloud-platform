@@ -1,0 +1,37 @@
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+!*.tfvars.example
+
+# Ansible
+*.retry
+
+# Secrets (never commit plaintext secrets)
+*.dec
+*.cleartext
+*-decrypted.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kubernetes
+kubeconfig
+kubeconfig.*
+!kubeconfig.example
+
+# Environment
+.env
+.env.*
+!.env.example

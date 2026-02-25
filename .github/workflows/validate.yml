@@ -1,0 +1,65 @@
+name: Validate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  yaml-lint:
+    name: YAML Validation
+    runs-on: k8s-hetzner-arc
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate YAML syntax
+        run: |
+          echo "Checking YAML files..."
+          ERRORS=0
+          for f in $(find . -name '*.yaml' -o -name '*.yml' | grep -v node_modules | grep -v .git); do
+            python3 -c "import yaml; yaml.safe_load(open('$f'))" 2>/dev/null || {
+              echo "::error file=$f::Invalid YAML syntax"
+              ERRORS=$((ERRORS + 1))
+            }
+          done
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::Found $ERRORS YAML validation errors"
+            exit 1
+          fi
+          echo "All YAML files valid"
+
+  terraform-validate:
+    name: Terraform Validation
+    runs-on: k8s-hetzner-arc
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Terraform
+        run: |
+          echo "Checking Terraform configurations..."
+          for dir in $(find clouds/ -name '*.tf' -exec dirname {} \; | sort -u); do
+            echo "  Validating $dir"
+            terraform -chdir="$dir" init -backend=false -input=false 2>/dev/null
+            terraform -chdir="$dir" validate || exit 1
+          done
+
+  security-scan:
+    name: Security Scan
+    runs-on: k8s-hetzner-arc
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for secrets
+        run: |
+          echo "Scanning for potential secrets..."
+          PATTERNS='(password|secret|token|api_key|private_key)\s*[:=]\s*["\x27][^"\x27]{8,}'
+          FOUND=$(grep -rniE "$PATTERNS" --include='*.yaml' --include='*.yml' --include='*.tf' --include='*.json' . | grep -v '.git/' | grep -v 'sops' | grep -v 'secretKeyRef' || true)
+          if [ -n "$FOUND" ]; then
+            echo "::warning::Potential secrets detected (review these):"
+            echo "$FOUND"
+          fi
+          echo "Security scan complete"
