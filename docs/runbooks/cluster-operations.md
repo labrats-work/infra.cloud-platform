@@ -110,7 +110,7 @@ Platform components are managed by FluxCD. To upgrade:
 
 ```bash
 kubectl top pods -A
-kubectl resource-quota -A
+kubectl get resourcequota -A
 ```
 
 ### Check for OOMKilled Pods
