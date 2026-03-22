@@ -32,5 +32,13 @@ Architecture docs, ADRs, cloud-specific guides, runbooks.
 - Semantic versioning, conventional commits
 - CI runners: `k8s-hetzner-arc`
 
+## Tooling
+- `make help` — list all available Makefile targets
+- `make validate` — validate Terraform configs and Kubernetes manifests
+- `make lint` — lint YAML files with yamllint
+- `make hetzner-plan` / `make hetzner-apply` — Terraform plan/apply for Hetzner
+- `make flux-check` — check Flux reconciliation status
+- `make flux-reconcile` — force Flux reconciliation
+
 ## Important
 This is a PUBLIC repository. Never commit secrets, credentials, or sensitive infrastructure details.

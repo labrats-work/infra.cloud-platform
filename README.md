@@ -4,7 +4,7 @@
 
 ---
 
-## Overview
+## Purpose
 
 A monorepo for managing cloud-native Kubernetes platforms across multiple cloud providers. The architecture separates **cloud-specific infrastructure** (provisioning, networking) from a **cloud-agnostic platform layer** (services, observability, security), enabling consistent operations across any provider.
 
@@ -107,13 +107,26 @@ flux bootstrap github \
 
 See [docs/clouds/hetzner.md](docs/clouds/hetzner.md) for the complete guide.
 
+## Development
+
+Run common tasks via `make`:
+
+```bash
+make help             # List all available targets
+make validate         # Validate Terraform + Kubernetes manifests
+make lint             # Lint all YAML files
+make hetzner-plan     # Terraform plan for Hetzner
+make flux-check       # Check Flux reconciliation status
+```
+
 ## Documentation
 
 - [Architecture Overview](docs/architecture/overview.md)
 - [Cloud Abstraction Strategy](docs/architecture/cloud-abstraction.md)
 - [Architecture Decision Records](docs/decisions/)
 - [Hetzner Cloud Guide](docs/clouds/hetzner.md)
-- [Runbooks](docs/runbooks/)
+- [Cluster Operations Runbook](docs/runbooks/cluster-operations.md)
+- [Flux Operations Runbook](docs/runbooks/flux-operations.md)
 
 ## Cost Analysis
 
