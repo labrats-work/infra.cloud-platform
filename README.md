@@ -109,11 +109,32 @@ See [docs/clouds/hetzner.md](docs/clouds/hetzner.md) for the complete guide.
 
 ## Documentation
 
+### Architecture
 - [Architecture Overview](docs/architecture/overview.md)
 - [Cloud Abstraction Strategy](docs/architecture/cloud-abstraction.md)
 - [Architecture Decision Records](docs/decisions/)
+
+### Operations
+- [CI/CD Pipeline](docs/ci-cd.md)
 - [Hetzner Cloud Guide](docs/clouds/hetzner.md)
-- [Runbooks](docs/runbooks/)
+- [Cluster Operations Runbook](docs/runbooks/cluster-operations.md)
+- [FluxCD Operations Runbook](docs/runbooks/flux-operations.md)
+- [Incident Response Runbook](docs/runbooks/incident-response.md)
+
+## Makefile Targets
+
+Run `make help` to see all available targets:
+
+| Target | Description |
+|--------|-------------|
+| `make validate` | Run all validation checks |
+| `make validate-terraform` | Validate Terraform configurations |
+| `make validate-kubernetes` | Validate Kubernetes manifests |
+| `make lint` | Lint YAML files |
+| `make hetzner-plan` | Terraform plan for Hetzner |
+| `make hetzner-apply` | Terraform apply for Hetzner |
+| `make flux-check` | Check Flux reconciliation status |
+| `make flux-reconcile` | Force Flux reconciliation |
 
 ## Cost Analysis
 
