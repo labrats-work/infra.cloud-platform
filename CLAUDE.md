@@ -1,36 +1,25 @@
-# Claude Context: infra.cloud-platform
+# CLAUDE.md
 
-## Overview
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What This Is
+
 Multi-cloud Kubernetes platform monorepo. Cloud-agnostic platform layer with provider-specific implementations.
 
-## Repository Structure
+**This is a PUBLIC repository.** Never commit secrets, credentials, or sensitive infrastructure details. This is a deviation from the workspace-wide "private by default" — be deliberate about what goes in here.
 
-### clouds/
-Cloud-specific infrastructure (Terraform, Ansible). Each cloud has its own directory.
-- `hetzner/` - Active implementation
-- `aws/`, `gcp/` - Planned
+## Structure
 
-### platform/
-Cloud-agnostic Kubernetes resources. These deploy identically on any cluster.
-- `shared/` - Base configs, CRDs, RBAC
-- `infrastructure/` - Ingress, cert-manager, DNS, Flux
-- `observability/` - Prometheus, Grafana, Loki
-- `security/` - SOPS, policies, network policies
-- `apps/` - Demo applications
-
-### tools/
-Shared scripts, Makefiles, CI helpers.
-
-### docs/
-Architecture docs, ADRs, cloud-specific guides, runbooks.
+```
+clouds/
+  hetzner/   — Active implementation (Terraform + Ansible)
+  aws/, gcp/ — Planned
+platform/    — Cloud-agnostic K8s resources (shared, infrastructure, observability, security, apps)
+tools/       — Shared scripts, Makefiles, CI helpers
+docs/        — Architecture docs, ADRs, runbooks
+```
 
 ## Conventions
+
 - Terraform modules in `clouds/<provider>/terraform/modules/`
 - Kustomize bases in `platform/`, overlays per-cloud if needed
-- All secrets encrypted with SOPS + AGE
-- No hardcoded IPs, tokens, or credentials anywhere
-- Semantic versioning, conventional commits
-- CI runners: `k8s-hetzner-arc`
-
-## Important
-This is a PUBLIC repository. Never commit secrets, credentials, or sensitive infrastructure details.
